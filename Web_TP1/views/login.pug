@@ -1,0 +1,36 @@
+extends layout      
+                                                 
+block middle
+    section.section
+        -data = data || {}
+
+        if errors
+            ul
+                for error in errors
+                    li= error.msg
+
+        if err
+            h1.title.has-text-centered #{err}
+
+        form(action='login' method='POST')
+            .columns.is-centered
+                .column.is-half
+                    .notification.is-primary.has-background-link-light
+                        .field
+                        label.label(for='username') Username
+                        p.control.has-icons-left
+                            input.input(type='text' required='required' id='username' name='username' value=data.username placeholder='Username')
+                            span.icon.is-small.is-left
+                                i.fas.fa-user-circle
+
+                        .field
+                        label.label(for='password') Password
+                        p.control.has-icons-left
+                            input.input(type='password' required='required' id='password' name='password' value=data.password
+                                placeholder='Password')
+                            span.icon.is-small.is-left
+                                i.fas.fa-lock
+
+                        .field
+                        .control
+                        button.button.is-link(type='submit' value='submit' style='display: block; margin: 0 auto;') Submit

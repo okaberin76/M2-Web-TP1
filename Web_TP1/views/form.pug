@@ -1,0 +1,121 @@
+extends layout
+      
+block middle
+    section.section
+        -data = data || {}
+
+        if errors
+            ul
+                for error in errors
+                    li= error.msg
+
+        form(action='form' method='POST' enctype='multipart/form-data')
+            .columns.is-centered
+                .column.is-half
+                    .notification.is-primary.has-background-link-light
+                        .field
+                            h1.title
+                                .has-text-black General informations
+                        .field
+                        label.label(for='title') Title
+                        .control
+                        input.input(type='text' required='required' id='title' name='title' placeholder='Title of your ad...' value=data.title)
+
+                        .field
+                        label.label(for='description') Description
+                        .control
+                        textarea.textarea(name='description' required='required' id='description'
+                            placeholder='Describe your ad in a few lines...' value=data.description)
+
+                        .field
+                        label.label(for='photos') Photos (optionnal)
+                        .control
+                        input#input-photos.input(type='file' name='photos' multiple data-max-file-size='3MB'
+                            accept='image/png, image/jpeg' value=data.photos)
+                        .field
+                            br
+                        .preview-images
+                        .field
+                            br
+
+                        .field
+                            p.title.has-text-black Ad settings
+
+                        .field
+                        label.label(for='price') Price (€)
+                        .control
+                        input.input(type='number' required='required' id='price' name='price' min='0' placeholder='Enter a price...' value=data.price)
+
+                        .field
+                            .columns
+                                .column
+                                    label.label(for='firstDate') From
+                                    .control
+                                    input.input(type='date' required='required' id='firstDate' name='firstDate' min='2021-01-01' max='2100-12-31'
+                                        value=data.firstDate)
+                                .column
+                                    label.label(for='secondDate') to
+                                    .control
+                                    input.input(type='date' required='required' id='secondDate' name='secondDate' min='2021-01-01' max='2100-12-31'
+                                        value=data.secondDate)
+                            #message.title.has-text-black.has-text-centered
+
+                        .field
+                        label.label Type
+                        .control.has-text-black
+                            label.radio
+                                input(type='radio' name='type' required='required' value='Sell' checked='')
+                                |     Sell
+                            label.radio
+                                input(type='radio' name='type' required='required' value='Location')
+                                |     Location
+
+                        .field
+                        label.label Status
+                        .control.has-text-black
+                            label.radio
+                                input(type='radio' name='goodStatus' required='required' value='Available' checked='')
+                                |     Available
+                            label.radio
+                                input(type='radio' name='goodStatus' required='required' value='Rented')
+                                |     Rented    
+                            label.radio
+                                input(type='radio' name='goodStatus' required='required' value='Sold')
+                                |     Sold
+
+                        .field
+                        label.label Publication
+                        .control.has-text-black
+                            label.radio
+                                input(type='radio' name='publicationStatus' required='required' value='Published' checked='')
+                                |     Published
+                            label.radio
+                                input(type='radio' name='publicationStatus' required='required' value='Not published')
+                                |     Not Published
+
+                        .field
+                            .columns
+                                .column
+                                    br
+                                    .control
+                                    button.button.is-success(type='submit' value='submit' name='submit' id='submit'
+                                       style='display: block; margin: 0 auto;') Submit
+
+    script(type='text/javascript').
+        let startInput = document.getElementById('firstDate');
+        let endInput = document.getElementById('secondDate');
+        let messageDiv = document.getElementById('message');
+        let submitButton = document.getElementById('submit');
+        let compare = () => {
+            let startValue = (new Date(startInput.value)).getTime();
+            let endValue = (new Date(endInput.value)).getTime();
+            if (endValue < startValue) {
+                messageDiv.innerHTML = 'The end date must be after the start date !';
+                submitButton.disabled = true;
+            } else {
+                messageDiv.innerHTML = '';
+                submitButton.disabled = false;
+            }
+        };
+        startInput.addEventListener('change', compare);
+        endInput.addEventListener('change', compare);

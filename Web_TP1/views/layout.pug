@@ -1,0 +1,159 @@
+doctype html
+
+html
+    head
+        link(rel='stylesheet' type='text/css' href='../../bulma/bulma.css')
+        link(rel='stylesheet', href='../../stylesheets/style.css')
+        script(src='https://use.fontawesome.com/releases/v5.15.4/js/all.js' data-auto-a11y='true')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title #{title}
+
+    body
+        block content
+            block heroHeader
+                section.hero
+                    .is-primary
+                        .is-small
+                            .has-background-info
+                                // Hero head: will stick at the top
+                                .hero-head
+
+                                // Hero content: will be in the middle
+                                .hero-body
+                                    .container
+                                        .has-text-centered
+                                            p.title.has-text-white
+                                                | Le Bon Logement
+
+            block heroFoot
+                // Hero footer: will stick at the bottom
+                section.hero
+                    .is-primary
+                        .is-small
+                            .has-background-info
+                                .hero-foot
+                                    nav.breadcrumb.is-centered(aria-label='breadcrumbs')
+                                        ul
+                                            if(page==="index")
+                                                li.is-active.has-text-black
+                                                    a
+                                                        span.icon.is-small
+                                                            i.fas.fa-home(aria-hidden='true')
+                                                        span Home
+                                            else
+                                                li
+                                                    a(href='/').has-text-white
+                                                        span.icon.is-small
+                                                            i.fas.fa-home(aria-hidden='true')
+                                                        span Home
+
+                                            if(page==="ads")
+                                                li.is-active.has-text-black
+                                                    a
+                                                        span.icon.is-small
+                                                            i.fas.fa-list-ul(aria-hidden='true')
+                                                        span Ads
+                                            else
+                                                li
+                                                    a(href=`${url}ads`).has-text-white
+                                                        span.icon.is-small
+                                                            i.fas.fa-list-ul(aria-hidden='true')
+                                                        span Ads
+
+                                            if(auth && agent)
+                                                if(page==="form")
+                                                    li.is-active.has-text-black
+                                                        a
+                                                            span.icon.is-small
+                                                                i.far.fa-file-alt(aria-hidden='true')
+                                                            span Add an ad
+                                                else
+                                                    li
+                                                        a(href=`${url}form`).has-text-white
+                                                            span.icon.is-small
+                                                                i.far.fa-file-alt(aria-hidden='true')
+                                                            span Add an ad
+
+                                            if(page==="about")
+                                                li.is-active.has-text-black
+                                                    a
+                                                        span.icon.is-small
+                                                            i.far.fa-question-circle(aria-hidden='true')
+                                                        span About
+                                            else
+                                                li
+                                                    a(href=`${url}about`).has-text-white
+                                                        span.icon.is-small
+                                                            i.far.fa-question-circle(aria-hidden='true')
+                                                        span About
+
+                                            if(auth !== true)
+                                                if(page==="login")
+                                                    li.is-active.has-text-black
+                                                        a
+                                                            span.icon.is-small
+                                                                i.fas.fa-plug(aria-hidden='true')
+                                                            span Login
+                                                else
+                                                    li
+                                                        a(href=`${url}login`).has-text-white
+                                                            span.icon.is-small
+                                                                i.fas.fa-plug(aria-hidden='true')
+                                                            span Login
+
+                                                if(page==="signup")
+                                                    li.is-active.has-text-black
+                                                        a
+                                                            span.icon.is-small
+                                                                i.fas.fa-sign-in-alt(aria-hidden='true')
+                                                            span Sign up
+                                                else
+                                                    li
+                                                    a(href=`${url}signup`).has-text-white
+                                                        span.icon.is-small
+                                                            i.fas.fa-sign-in-alt(aria-hidden='true')
+                                                        span Sign up
+
+                                            if(auth)
+                                                li
+                                                form(action=`${url}login/logout` method='post') &nbsp;
+                                                    button.btn-link(type='submit' name='logout' value='logout')
+                                                        i.fas.fa-sign-out-alt(aria-hidden='true')
+                                                        span &nbsp; Log out 
+                                                        span (#{username})
+
+            block middle
+
+            block foot
+                footer.footer.wrapper.has-background-light
+                    .content.has-text-centered.has-text-black.wrapper
+                        p
+                        strong By
+                        |  Maxence Bourgeaux and Robin Guyomar
+                        span.icon-text
+                            span.icon
+                                i.far.fa-copyright
+
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js')
+    script(src='https://code.jquery.com/jquery-3.4.1.min.js')
+    script.
+        $(document).ready(function() {
+            let imagesPreview = function(input, placeToInsertImagePreview) {
+                if (input.files) {
+                    let filesAmount = input.files.length;
+                    for (i = 0; i < filesAmount; i++) {
+                        let reader = new FileReader();
+                        reader.onload = function(event) {
+                            $($.parseHTML("<img>"))
+                                .attr("src", event.target.result)
+                                .appendTo(placeToInsertImagePreview);
+                        };
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                }
+            };
+
+            $("#input-photos").on("change", function() {
+                imagesPreview(this, "div.preview-images");
+            });
+        });

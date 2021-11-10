@@ -1,0 +1,33 @@
+@import '~bulma';
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer{
+    margin-top: auto;
+}
+
+.btn-link {
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+div.preview-images > img {
+    width: 30%;
+}
+
+textarea {
+    white-space: pre-line;
+}
+
+p {
+    white-space: pre-line;
+}

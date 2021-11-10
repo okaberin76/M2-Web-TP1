@@ -1,0 +1,165 @@
+
+extends layout       
+
+block middle
+    section.section
+        -data = data || {}
+
+        if errors
+            ul
+                for error in errors
+                    li= error.msg
+
+        form(action='' method='POST' enctype='multipart/form-data')
+            .columns.is-centered
+                .column.is-half
+                    .notification.is-primary.has-background-link-light
+                        .field
+                            h1.title
+                                .has-text-black General informations
+                        .field
+                        label.label(for='title') Title
+                        .control
+                        input.input(type='text' required='required' id='title' name='title'
+                            placeholder='New title of your ad ...' value=adId.title)
+
+                        .field
+                        label.label(for='description') Description
+                        .control
+                        textarea.textarea(name='description' required='required' id ='description'
+                            placeholder='New description of your ad in a few lines ...'
+                            value=adId.description) #{adId.description}
+
+                        .field
+                        label.label(for='photos') Photos (optionnal)
+                            .column.is-one-quarter
+                                figure
+                                        if(adId.photos.length)
+                                            each picture in adId.photos
+                                                img(src=`/images/${picture}`)
+                                        else
+                                            img(src='/images/notImage.jpg')
+                        .control
+                        input#input-photos.input(type='file' name='photos' multiple data-max-file-size='3MB'
+                            accept='image/png, image/jpeg' value=data.photos)
+
+                        .field
+                            br
+                        .preview-images
+
+                        .field
+                            p.title.has-text-black Ad settings
+
+                        .field
+                        label.label(for='price') Price (€)
+                        .control
+                        input.input(type='number' required='required' id='price' name='price' min='0'
+                            placeholder='Enter a new price ...' value=adId.price)
+
+                        .field
+                            .columns
+                                .column
+                                    label.label(for='firstDate') From
+                                    .control
+                                    input.input(type='date' required='required' id='firstDate' name='firstDate'
+                                        min='2021-01-01' max='2100-12-31' value=fDate)
+
+                                .column
+                                    label.label(for='secondDate') to
+                                    .control
+                                    input.input(type='date' required='required' id='secondDate' name='secondDate'
+                                        min='2021-01-01' max='2100-12-31' value=sDate)
+                            #message.title.has-text-black.has-text-centered
+
+                        .field
+                        label.label Type
+                        .control.has-text-black
+                            if(adId.type === "Sell")
+                                label.radio
+                                    input(type='radio' name='type' required='required' value='Sell' checked='')
+                                    |   Sell
+                                label.radio
+                                    input(type='radio' name='type' required='required' value='Location')
+                                    |   Location
+                            else
+                                label.radio
+                                    input(type='radio' name='type' required='required' value='Sell')
+                                    |   Sell
+                                label.radio
+                                    input(type='radio' name='type' required='required' value='Location' checked='')
+                                    |   Location
+
+                        .field
+                        label.label Status
+                        .control.has-text-black
+                            if(adId.goodStatus === "Available")
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Available' checked='')
+                                    |   Available
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Rented')
+                                    |   Rented
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Sold')
+                                    |   Sold
+                            else if(adId.goodStatus === "Rented")
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Available')
+                                    |   Available
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Rented' checked='')
+                                    |   Rented
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Sold')
+                                    |   Sold
+                            else
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Available')
+                                    |   Available
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Rented')
+                                    |   Rented
+                                label.radio
+                                    input(type='radio' name='goodStatus' required='required' value='Sold' checked='')
+                                    |   Sold
+
+                        .field
+                        label.label Publication
+                        .control.has-text-black
+                            if(adId.publicationStatus === "Published")
+                                label.radio
+                                    input(type='radio' name='publicationStatus' required='required' value='Published' checked='')
+                                    |   Published
+                                label.radio
+                                    input(type='radio' name='publicationStatus' required='required' value='Not published')
+                                    |   Not Published
+                            else
+                                label.radio
+                                    input(type='radio' name='publicationStatus' required='required' value='Published')
+                                    |   Published
+                                label.radio
+                                    input(type='radio' name='publicationStatus' required='required' value='Not published' checked='')
+                                    |   Not Published
+
+                        .field
+                        .control
+                        button.button.is-success(type='submit' value='submit' style='display: block; margin: 0 auto;') Modify
+
+    script(type='text/javascript').
+        let startInput = document.getElementById('firstDate');
+        let endInput = document.getElementById('secondDate');
+        let messageDiv = document.getElementById('message');
+        let submitButton = document.getElementById('submit');
+        let compare = () => {
+            let startValue = (new Date(startInput.value)).getTime();
+            let endValue = (new Date(endInput.value)).getTime();
+            if (endValue < startValue) {
+                messageDiv.innerHTML = 'The end date must be after the start date !';
+                submitButton.disabled = true;
+            } else {
+                messageDiv.innerHTML = '';
+                submitButton.disabled = false;
+            }
+        };
+        startInput.addEventListener('change', compare);
+        endInput.addEventListener('change', compare);

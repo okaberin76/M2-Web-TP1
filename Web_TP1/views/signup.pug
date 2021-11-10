@@ -1,0 +1,52 @@
+extends layout   
+                                                   
+block middle
+    section.section
+        -data = data || {}
+
+        if errors
+            ul
+                for error in errors
+                    li= error.msg
+
+        if err
+            h1.title.has-text-centered #{err}            
+
+        form(action='signup' method='POST')
+            .columns.is-centered
+                .column.is-half
+                    .notification.is-primary.has-background-link-light
+                        .field
+                        label.label(for='username') Username
+                        p.control.has-icons-left
+                            input.input(type='text' required='required' id='username' name='username' maxlength='50' value=data.username placeholder='Username')
+                            span.icon.is-small.is-left
+                                i.fas.fa-user-circle
+
+                        .field
+                        label.label(for='email') E-mail
+                        p.control.has-icons-left
+                            input.input(type='email' required='required' id='email' name='email' maxlength='50' value=data.email placeholder='Example : ludovic@aol.com')
+                            span.icon.is-small.is-left
+                                i.fas.fa-envelope
+
+                        .field
+                        label.label(for='password') Password
+                        p.control.has-icons-left
+                            input.input(type='password' required='required' id='password' name='password' minlength='6' maxlength='100' value=data.hashedPassword placeholder='Password')
+                            span.icon.is-small.is-left
+                                i.fas.fa-lock
+
+                        .field
+                        label.label Real estate agent
+                        .control.has-text-black
+                            label.radio
+                                input(type='radio' name='agent' required='required' value='true')
+                                |     Yes
+                            label.radio
+                                input(type='radio' name='agent' required='required' value='false' checked='')
+                                |     No
+
+                        .field
+                        .control
+                        button.button.is-link(type='submit' value='submit' style='display: block; margin: 0 auto;') Submit
