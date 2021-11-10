@@ -5,7 +5,7 @@
 
 ## Author(s)
 
-|Nom|Prénom|
+|Name|First Name|
 |--|--|
 | *Guyomar* | *Robin*|
 | *Bourgeaux* | *Maxence*|
